@@ -7,7 +7,7 @@
 ## 使用条件
 
 - Arch Linux x86_64，正常工作的网络、`sudo` 和 Niri 图形会话
-- 以普通桌面用户运行，**不要使用 `sudo ./install.sh`**
+- 以普通桌面用户运行，**不要使用 `sudo bash install.sh`**
 - 已有配置会备份，但安装将替换当前用户的 Niri 与 Clavis 配置；先阅读 `config/` 中的键位和偏好
 - 上游 `install-arch.sh` 固定为 `v2026.9.25` 并校验 SHA-256；key-cli 由该安装器选择满足要求的正式发布版
 - 上游安装器会执行 Arch 的完整系统更新、编译 AUR 依赖，所需时间取决于机器和网络
@@ -17,13 +17,13 @@
 ```bash
 git clone https://github.com/1024971823/niri-clavis-setup.git
 cd niri-clavis-setup
-./install.sh --wallpaper /绝对路径/你的壁纸.jpg
+bash install.sh --wallpaper /绝对路径/你的壁纸.jpg
 ```
 
 如果未指定壁纸，脚本会使用已有的 `~/.config/niri/wallpaper.jpg`；否则生成一张简单的渐变图。桌宠不在仓库中，如本机已有启动脚本，可以加上：
 
 ```bash
-./install.sh --wallpaper /绝对路径/壁纸.jpg \
+bash install.sh --wallpaper /绝对路径/壁纸.jpg \
   --pet-start /绝对路径/桌宠/start.sh \
   --pet-process-match '/绝对路径/桌宠/[p]et.js'
 ```
@@ -31,13 +31,13 @@ cd niri-clavis-setup
 仅应用配置（已经安装上游包时）：
 
 ```bash
-./install.sh --config-only --wallpaper /绝对路径/壁纸.jpg
+bash install.sh --config-only --wallpaper /绝对路径/壁纸.jpg
 ```
 
 先检查模板与本机依赖，不写文件：
 
 ```bash
-./install.sh --dry-run
+bash install.sh --dry-run
 ```
 
 安装后退出当前会话，在登录界面选择 **Niri**。脚本不会强行重启现有桌面。
@@ -45,8 +45,8 @@ cd niri-clavis-setup
 ## 验证与恢复
 
 ```bash
-./verify.sh
-./restore.sh
+bash verify.sh
+bash restore.sh
 ```
 
 `verify.sh` 会检查 Niri 配置、Clavis 原生插件及用户服务。在 Niri 会话内还检查状态栏和壁纸层。`restore.sh` 会恢复安装前备份的用户配置和服务启用状态；备份位于 `~/.local/state/niri-clavis-setup/backups/`。恢复后重新登录。

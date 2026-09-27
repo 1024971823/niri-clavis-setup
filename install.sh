@@ -14,7 +14,7 @@ pet_process_match=''
 
 usage() {
     cat <<'EOF'
-Usage: ./install.sh [--config-only] [--dry-run] [--wallpaper FILE]
+Usage: bash install.sh [--config-only] [--dry-run] [--wallpaper FILE]
                     [--pet-start FILE] [--pet-process-match PATTERN]
 
 Installs the pinned Clavis release and dependencies, then applies this Niri setup.
