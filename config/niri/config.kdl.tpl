@@ -1,0 +1,689 @@
+// 简体中文界面：应用继承中文语言设置。
+environment {
+    LANG "zh_CN.UTF-8"
+    LANGUAGE "zh_CN:zh:en"
+    LC_ALL "zh_CN.UTF-8"
+}
+
+// This config is in the KDL format: https://kdl.dev
+// "/-" comments out the following node.
+// Check the wiki for a full description of the configuration:
+// https://niri-wm.github.io/niri/Configuration:-Introduction
+
+// Input device configuration.
+// Find the full list of options on the wiki:
+// https://niri-wm.github.io/niri/Configuration:-Input
+input {
+    keyboard {
+        xkb {
+            // You can set rules, model, layout, variant and options.
+            // For more information, see xkeyboard-config(7).
+
+            layout "us"
+            options "compose:ralt"
+
+            // If this section is empty, niri will fetch xkb settings
+            // from org.freedesktop.locale1. You can control these using
+            // localectl set-x11-keymap.
+        }
+
+        // Enable numlock on startup, omitting this setting disables it.
+        numlock
+    }
+
+    // Next sections include libinput settings.
+    // Omitting settings disables them, or leaves them at their default values.
+    // All commented-out settings here are examples, not defaults.
+    touchpad {
+        // off
+        tap
+        // dwt
+        // dwtp
+        // drag false
+        // drag-lock
+        natural-scroll
+        // accel-speed 0.2
+        // accel-profile "flat"
+        // scroll-method "two-finger"
+        // disabled-on-external-mouse
+    }
+
+    mouse {
+        // off
+        // natural-scroll
+        // accel-speed 0.2
+        // accel-profile "flat"
+        // scroll-method "no-scroll"
+    }
+
+    trackpoint {
+        // off
+        // natural-scroll
+        // accel-speed 0.2
+        // accel-profile "flat"
+        // scroll-method "on-button-down"
+        // scroll-button 273
+        // scroll-button-lock
+        // middle-emulation
+    }
+
+    // Uncomment this to make the mouse warp to the center of newly focused windows.
+    // warp-mouse-to-focus
+
+    // Focus windows and outputs automatically when moving the mouse into them.
+    // Setting max-scroll-amount="0%" makes it work only on windows already fully on screen.
+    // focus-follows-mouse max-scroll-amount="0%"
+}
+
+// You can configure outputs by their name, which you can find
+// by running `niri msg outputs` while inside a niri instance.
+// The built-in laptop monitor is usually called "eDP-1".
+// Find more information on the wiki:
+// https://niri-wm.github.io/niri/Configuration:-Outputs
+// Remember to uncomment the node by removing "/-"!
+output "eDP-1" {
+    // Uncomment this line to disable this output.
+    // off
+
+    // Resolution and, optionally, refresh rate of the output.
+    // The format is "<width>x<height>" or "<width>x<height>@<refresh rate>".
+    // If the refresh rate is omitted, niri will pick the highest refresh rate
+    // for the resolution.
+    // If the mode is omitted altogether or is invalid, niri will pick one automatically.
+    // Run `niri msg outputs` while inside a niri instance to list all outputs and their modes.
+
+    // You can use integer or fractional scale, for example use 1.5 for 150% scale.
+    scale 1
+
+    // Transform allows to rotate the output counter-clockwise, valid values are:
+    // normal, 90, 180, 270, flipped, flipped-90, flipped-180 and flipped-270.
+    transform "normal"
+
+    // Position of the output in the global coordinate space.
+    // This affects directional monitor actions like "focus-monitor-left", and cursor movement.
+    // The cursor can only move between directly adjacent outputs.
+    // Output scale and rotation has to be taken into account for positioning:
+    // outputs are sized in logical, or scaled, pixels.
+    // For example, a 3840×2160 output with scale 2.0 will have a logical size of 1920×1080,
+    // so to put another output directly adjacent to it on the right, set its x to 1920.
+    // If the position is unset or results in an overlap, the output is instead placed
+    // automatically.
+    position x=0 y=0
+}
+
+// Settings that influence how windows are positioned and sized.
+// Find more information on the wiki:
+// https://niri-wm.github.io/niri/Configuration:-Layout
+layout {
+    background-color "transparent"
+    // Set gaps around windows in logical pixels.
+    gaps 12
+
+    // When to center a column when changing focus, options are:
+    // - "never", default behavior, focusing an off-screen column will keep at the left
+    //   or right edge of the screen.
+    // - "always", the focused column will always be centered.
+    // - "on-overflow", focusing a column will center it if it doesn't fit
+    //   together with the previously focused column.
+    center-focused-column "on-overflow"
+
+    // You can customize the widths that "switch-preset-column-width" (Mod+R) toggles between.
+    preset-column-widths {
+        // Proportion sets the width as a fraction of the output width, taking gaps into account.
+        // For example, you can perfectly fit four windows sized "proportion 0.25" on an output.
+        // The default preset widths are 1/3, 1/2 and 2/3 of the output.
+        proportion 0.33333
+        proportion 0.5
+        proportion 0.66667
+
+        // Fixed sets the width in logical pixels exactly.
+        // fixed 1920
+    }
+
+    // You can also customize the heights that "switch-preset-window-height" (Mod+Ctrl+Shift+R) toggles between.
+    // preset-window-heights { }
+
+    // You can change the default width of the new windows.
+    default-column-width { proportion 0.6; }
+    // If you leave the brackets empty, the windows themselves will decide their initial width.
+    // default-column-width {}
+
+    // By default focus ring and border are rendered as a solid background rectangle
+    // behind windows. That is, they will show up through semitransparent windows.
+    // This is because windows using client-side decorations can have an arbitrary shape.
+    //
+    // If you don't like that, you should uncomment `prefer-no-csd` below.
+    // Niri will draw focus ring and border *around* windows that agree to omit their
+    // client-side decorations.
+    //
+    // Alternatively, you can override it with a window rule called
+    // `draw-border-with-background`.
+
+    // You can change how the focus ring looks.
+    focus-ring {
+        // Uncomment this line to disable the focus ring.
+        // off
+
+        // How many logical pixels the ring extends out from the windows.
+        width 3
+
+        // Colors can be set in a variety of ways:
+        // - CSS named colors: "red"
+        // - RGB hex: "#rgb", "#rgba", "#rrggbb", "#rrggbbaa"
+        // - CSS-like notation: "rgb(255, 127, 0)", rgba(), hsl() and a few others.
+
+        // Color of the ring on the active monitor.
+        active-color "#89b4fa"
+
+        // Color of the ring on inactive monitors.
+        //
+        // The focus ring only draws around the active window, so the only place
+        // where you can see its inactive-color is on other monitors.
+        inactive-color "#45475a"
+
+        // You can also use gradients. They take precedence over solid colors.
+        // Gradients are rendered the same as CSS linear-gradient(angle, from, to).
+        // The angle is the same as in linear-gradient, and is optional,
+        // defaulting to 180 (top-to-bottom gradient).
+        // You can use any CSS linear-gradient tool on the web to set these up.
+        // Changing the color space is also supported, check the wiki for more info.
+        //
+        // active-gradient from="#80c8ff" to="#c7ff7f" angle=45
+
+        // You can also color the gradient relative to the entire view
+        // of the workspace, rather than relative to just the window itself.
+        // To do that, set relative-to="workspace-view".
+        //
+        // inactive-gradient from="#505050" to="#808080" angle=45 relative-to="workspace-view"
+    }
+
+    // You can also add a border. It's similar to the focus ring, but always visible.
+    border {
+        // The settings are the same as for the focus ring.
+        // If you enable the border, you probably want to disable the focus ring.
+        off
+
+        width 4
+        active-color "#ffc87f"
+        inactive-color "#505050"
+
+        // Color of the border around windows that request your attention.
+        urgent-color "#9b0000"
+
+        // Gradients can use a few different interpolation color spaces.
+        // For example, this is a pastel rainbow gradient via in="oklch longer hue".
+        //
+        // active-gradient from="#e5989b" to="#ffb4a2" angle=45 relative-to="workspace-view" in="oklch longer hue"
+
+        // inactive-gradient from="#505050" to="#808080" angle=45 relative-to="workspace-view"
+    }
+
+    // You can enable drop shadows for windows.
+    shadow {
+        on
+
+        // By default, the shadow draws only around its window, and not behind it.
+        // Uncomment this setting to make the shadow draw behind its window.
+        //
+        // Note that niri has no way of knowing about the CSD window corner
+        // radius. It has to assume that windows have square corners, leading to
+        // shadow artifacts inside the CSD rounded corners. This setting fixes
+        // those artifacts.
+        //
+        // However, instead you may want to set prefer-no-csd and/or
+        // geometry-corner-radius. Then, niri will know the corner radius and
+        // draw the shadow correctly, without having to draw it behind the
+        // window. These will also remove client-side shadows if the window
+        // draws any.
+        //
+        // draw-behind-window true
+
+        // You can change how shadows look. The values below are in logical
+        // pixels and match the CSS box-shadow properties.
+
+        // Softness controls the shadow blur radius.
+        softness 24
+
+        // Spread expands the shadow.
+        spread 4
+
+        // Offset moves the shadow relative to the window.
+        offset x=0 y=5
+
+        // You can also change the shadow color and opacity.
+        color "#0007"
+    }
+
+    // Struts shrink the area occupied by windows, similarly to layer-shell panels.
+    // You can think of them as a kind of outer gaps. They are set in logical pixels.
+    // Left and right struts will cause the next window to the side to always be visible.
+    // Top and bottom struts will simply add outer gaps in addition to the area occupied by
+    // layer-shell panels and regular gaps.
+    struts {
+        // left 64
+        // right 64
+        // top 64
+        // bottom 64
+    }
+}
+
+// Add lines like this to spawn processes at startup.
+// Note that running niri as a session supports xdg-desktop-autostart,
+// which may be more convenient to use.
+// See the binds section below for more spawn examples.
+
+// This line starts waybar, a commonly used bar for Wayland compositors.
+// Recovery profile: optional panels are disabled after a Waybar crash.
+// Clavis provides the desktop bar; previous Waybar command is in the backup.
+// Clavis provides notifications; previous Mako command is in the backup.
+spawn-at-startup "fcitx5" "-d"
+spawn-at-startup "/usr/lib/polkit-kde-authentication-agent-1"
+// spawn-at-startup "udiskie" "--tray"
+// Keep the existing wallpaper visible while Clavis starts or if it fails.
+spawn-at-startup "swaybg" "-i" "@WALLPAPER@" "-m" "fill"
+spawn-at-startup "swayidle" "-w" "timeout" "900" "swaylock -f -c 1e1e2e" "before-sleep" "swaylock -f -c 1e1e2e"
+spawn-at-startup "alacritty"
+@PET_START_LINE@
+
+// To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
+// spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"
+
+hotkey-overlay {
+    // Uncomment this line to disable the "Important Hotkeys" pop-up at startup.
+    // skip-at-startup
+}
+
+// Uncomment this line to ask the clients to omit their client-side decorations if possible.
+// If the client will specifically ask for CSD, the request will be honored.
+// Additionally, clients will be informed that they are tiled, removing some client-side rounded corners.
+// This option will also fix border/focus ring drawing behind some semitransparent windows.
+// After enabling or disabling this, you need to restart the apps for this to take effect.
+// prefer-no-csd
+
+// You can change the path where screenshots are saved.
+// A ~ at the front will be expanded to the home directory.
+// The path is formatted with strftime(3) to give you the screenshot date and time.
+screenshot-path "@HOME@/Pictures/Screenshots/Niri screenshot from %Y-%m-%d %H-%M-%S.png"
+
+// You can also set this to null to disable saving screenshots to disk.
+// screenshot-path null
+
+// Animation settings.
+// The wiki explains how to configure individual animations:
+// https://niri-wm.github.io/niri/Configuration:-Animations
+animations {
+    // Uncomment to turn off all animations.
+    // off
+
+    // Slow down all animations by this factor. Values below 1 speed them up instead.
+    // slowdown 3.0
+}
+
+// Window rules let you adjust behavior for individual windows.
+// Find more information on the wiki:
+// https://niri-wm.github.io/niri/Configuration:-Window-Rules
+
+// Consistent rounded corners for the desktop theme.
+window-rule {
+    geometry-corner-radius 12
+    clip-to-geometry true
+}
+
+// Work around WezTerm's initial configure bug
+// by setting an empty default-column-width.
+window-rule {
+    // This regular expression is intentionally made as specific as possible,
+    // since this is the default config, and we want no false positives.
+    // You can get away with just app-id="wezterm" if you want.
+    match app-id=r#"^org\.wezfurlong\.wezterm$"#
+    default-column-width {}
+}
+
+// Open the Firefox picture-in-picture player as floating by default.
+window-rule {
+    // This app-id regular expression will work for both:
+    // - host Firefox (app-id is "firefox")
+    // - Flatpak Firefox (app-id is "org.mozilla.firefox")
+    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+    open-floating true
+}
+
+// Example: block out two password managers from screen capture.
+// (This example rule is commented out with a "/-" in front.)
+/-window-rule {
+    match app-id=r#"^org\.keepassxc\.KeePassXC$"#
+    match app-id=r#"^org\.gnome\.World\.Secrets$"#
+
+    block-out-from "screen-capture"
+
+    // Use this instead if you want them visible on third-party screenshot tools.
+    // block-out-from "screencast"
+}
+
+// Example: enable rounded corners for all windows.
+// (This example rule is commented out with a "/-" in front.)
+/-window-rule {
+    geometry-corner-radius 12
+    clip-to-geometry true
+}
+
+binds {
+    // Keys consist of modifiers separated by + signs, followed by an XKB key name
+    // in the end. To find an XKB name for a particular key, you may use a program
+    // like wev.
+    //
+    // "Mod" is a special modifier equal to Super when running on a TTY, and to Alt
+    // when running as a winit window.
+    //
+    // Most actions that you can bind here can also be invoked programmatically with
+    // `niri msg action do-something`.
+
+    // Mod-Shift-/, which is usually the same as Mod-?,
+    // shows a list of important hotkeys.
+    Mod+Shift+Slash hotkey-overlay-title="显示快捷键提示" { show-hotkey-overlay; }
+
+    // Suggested binds for running programs: terminal, app launcher, screen locker.
+    Mod+T hotkey-overlay-title="打开终端" { spawn "alacritty"; }
+
+    // Clavis shell controls. Mod+D still opens Fuzzel as a fallback.
+    Mod+Slash repeat=false hotkey-overlay-title="Clavis 快捷键" { spawn "qs" "-c" "clavis" "ipc" "call" "shortcut-map" "toggle"; }
+    Mod+Shift+Space repeat=false hotkey-overlay-title="网页搜索" { spawn "qs" "-c" "clavis" "ipc" "call" "spotlight" "web"; }
+    Mod+Alt+V repeat=false hotkey-overlay-title="剪贴板历史" { spawn "qs" "-c" "clavis" "ipc" "call" "spotlight" "openMode" "clipboard"; }
+    Mod+Alt+W repeat=false hotkey-overlay-title="选择壁纸" { spawn "qs" "-c" "clavis" "ipc" "call" "spotlight" "openMode" "wallpapers"; }
+    Mod+N repeat=false hotkey-overlay-title="信息侧栏" { spawn "qs" "-c" "clavis" "ipc" "call" "sidebar" "toggle" "dashboard"; }
+    Mod+A repeat=false hotkey-overlay-title="快捷设置" { spawn "qs" "-c" "clavis" "ipc" "call" "sidebar" "toggle" "quicksettings"; }
+    Mod+Ctrl+Comma repeat=false hotkey-overlay-title="Clavis 设置" { spawn "qs" "-c" "clavis" "ipc" "call" "control-center" "toggle" "general"; }
+    Mod+Shift+T repeat=false hotkey-overlay-title="Clavis 工具" { spawn "qs" "-c" "clavis" "ipc" "call" "keystone" "tools"; }
+    Alt+Shift+L repeat=false hotkey-overlay-title="Clavis 锁屏" { spawn "qs" "-c" "clavis" "ipc" "call" "lock" "open"; }
+
+    Super+Return hotkey-overlay-title="打开终端" { spawn "alacritty"; }
+    Mod+D hotkey-overlay-title="打开应用菜单" { spawn "fuzzel" "--config" "@HOME@/.config/niri/fuzzel-zh.ini"; }
+    Super+Space repeat=false hotkey-overlay-title="Clavis 搜索" { spawn "qs" "-c" "clavis" "ipc" "call" "spotlight" "toggle"; }
+    Super+Alt+L hotkey-overlay-title="锁定屏幕" { spawn "swaylock"; }
+
+    // Use spawn-sh to run a shell command. Do this if you need pipes, multiple commands, etc.
+    // Note: the entire command goes as a single argument. It's passed verbatim to `sh -c`.
+    // For example, this is a standard bind to toggle the screen reader (orca).
+    Super+Alt+S allow-when-locked=true hotkey-overlay-title=null { spawn-sh "pkill orca || exec orca"; }
+
+    // Example volume keys mappings for PipeWire & WirePlumber.
+    // The allow-when-locked=true property makes them work even when the session is locked.
+    // Using spawn-sh allows to pass multiple arguments together with the command.
+    // "-l 1.0" limits the volume to 100%.
+    XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+ -l 1.0"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-"; }
+    XF86AudioMute        allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
+    XF86AudioMicMute     allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"; }
+
+    // Example media keys mapping using playerctl.
+    // This will work with any MPRIS-enabled media player.
+    XF86AudioPlay        allow-when-locked=true { spawn-sh "playerctl play-pause"; }
+    XF86AudioStop        allow-when-locked=true { spawn-sh "playerctl stop"; }
+    XF86AudioPrev        allow-when-locked=true { spawn-sh "playerctl previous"; }
+    XF86AudioNext        allow-when-locked=true { spawn-sh "playerctl next"; }
+
+    // Example brightness key mappings for brightnessctl.
+    // You can use regular spawn with multiple arguments too (to avoid going through "sh"),
+    // but you need to manually put each argument in separate "" quotes.
+    // Brightness bindings are intentionally omitted until brightnessctl is installed.
+    // XF86MonBrightnessUp ...
+    // XF86MonBrightnessDown ...
+
+    // Open/close the Overview: a zoomed-out view of workspaces and windows.
+    // You can also move the mouse into the top-left hot corner,
+    // or do a four-finger swipe up on a touchpad.
+    Mod+O repeat=false hotkey-overlay-title="打开或关闭工作区概览" { toggle-overview; }
+
+    Mod+Q repeat=false hotkey-overlay-title="关闭窗口" { close-window; }
+
+    Mod+Left  hotkey-overlay-title="切换到左侧窗口" { focus-column-left; }
+    Mod+Down  hotkey-overlay-title="切换到下方窗口" { focus-window-down; }
+    Mod+Up    hotkey-overlay-title="切换到上方窗口" { focus-window-up; }
+    Mod+Right hotkey-overlay-title="切换到右侧窗口" { focus-column-right; }
+    Mod+H     hotkey-overlay-title="切换到左侧窗口" { focus-column-left; }
+    Mod+J     hotkey-overlay-title="切换到下方窗口" { focus-window-down; }
+    Mod+K     hotkey-overlay-title="切换到上方窗口" { focus-window-up; }
+    Mod+L     hotkey-overlay-title="切换到右侧窗口" { focus-column-right; }
+
+    Mod+Ctrl+Left  hotkey-overlay-title="向左移动窗口列" { move-column-left; }
+    Mod+Ctrl+Down  hotkey-overlay-title="向下移动窗口" { move-window-down; }
+    Mod+Ctrl+Up    hotkey-overlay-title="向上移动窗口" { move-window-up; }
+    Mod+Ctrl+Right hotkey-overlay-title="向右移动窗口列" { move-column-right; }
+    Mod+Ctrl+H     hotkey-overlay-title="向左移动窗口列" { move-column-left; }
+    Mod+Ctrl+J     hotkey-overlay-title="向下移动窗口" { move-window-down; }
+    Mod+Ctrl+K     hotkey-overlay-title="向上移动窗口" { move-window-up; }
+    Mod+Ctrl+L     hotkey-overlay-title="向右移动窗口列" { move-column-right; }
+
+    // Alternative commands that move across workspaces when reaching
+    // the first or last window in a column.
+    // Mod+J     { focus-window-or-workspace-down; }
+    // Mod+K     { focus-window-or-workspace-up; }
+    // Mod+Ctrl+J     { move-window-down-or-to-workspace-down; }
+    // Mod+Ctrl+K     { move-window-up-or-to-workspace-up; }
+
+    Mod+Home { focus-column-first; }
+    Mod+End  { focus-column-last; }
+    Mod+Ctrl+Home { move-column-to-first; }
+    Mod+Ctrl+End  { move-column-to-last; }
+
+    Mod+Shift+Left  { focus-monitor-left; }
+    Mod+Shift+Down  { focus-monitor-down; }
+    Mod+Shift+Up    { focus-monitor-up; }
+    Mod+Shift+Right { focus-monitor-right; }
+    Mod+Shift+H     { focus-monitor-left; }
+    Mod+Shift+J     { focus-monitor-down; }
+    Mod+Shift+K     { focus-monitor-up; }
+    Mod+Shift+L     { focus-monitor-right; }
+
+    Mod+Shift+Ctrl+Left  { move-column-to-monitor-left; }
+    Mod+Shift+Ctrl+Down  { move-column-to-monitor-down; }
+    Mod+Shift+Ctrl+Up    { move-column-to-monitor-up; }
+    Mod+Shift+Ctrl+Right { move-column-to-monitor-right; }
+    Mod+Shift+Ctrl+H     { move-column-to-monitor-left; }
+    Mod+Shift+Ctrl+J     { move-column-to-monitor-down; }
+    Mod+Shift+Ctrl+K     { move-column-to-monitor-up; }
+    Mod+Shift+Ctrl+L     { move-column-to-monitor-right; }
+
+    // Alternatively, there are commands to move just a single window:
+    // Mod+Shift+Ctrl+Left  { move-window-to-monitor-left; }
+    // ...
+
+    // And you can also move a whole workspace to another monitor:
+    // Mod+Shift+Ctrl+Left  { move-workspace-to-monitor-left; }
+    // ...
+
+    Mod+Page_Down      hotkey-overlay-title="切换到下一个工作区" { focus-workspace-down; }
+    Mod+Page_Up        hotkey-overlay-title="切换到上一个工作区" { focus-workspace-up; }
+    Mod+U              hotkey-overlay-title="切换到下一个工作区" { focus-workspace-down; }
+    Mod+I              hotkey-overlay-title="切换到上一个工作区" { focus-workspace-up; }
+    Mod+Ctrl+Page_Down hotkey-overlay-title="将窗口列移至下一个工作区" { move-column-to-workspace-down; }
+    Mod+Ctrl+Page_Up   hotkey-overlay-title="将窗口列移至上一个工作区" { move-column-to-workspace-up; }
+    Mod+Ctrl+U         hotkey-overlay-title="将窗口列移至下一个工作区" { move-column-to-workspace-down; }
+    Mod+Ctrl+I         hotkey-overlay-title="将窗口列移至上一个工作区" { move-column-to-workspace-up; }
+
+    // Alternatively, there are commands to move just a single window:
+    // Mod+Ctrl+Page_Down { move-window-to-workspace-down; }
+    // ...
+
+    Mod+Shift+Page_Down hotkey-overlay-title="下移工作区" { move-workspace-down; }
+    Mod+Shift+Page_Up   hotkey-overlay-title="上移工作区" { move-workspace-up; }
+    Mod+Shift+U         hotkey-overlay-title="下移工作区" { move-workspace-down; }
+    Mod+Shift+I         hotkey-overlay-title="上移工作区" { move-workspace-up; }
+
+    // You can bind mouse wheel scroll ticks using the following syntax.
+    // These binds will change direction based on the natural-scroll setting.
+    //
+    // To avoid scrolling through workspaces really fast, you can use
+    // the cooldown-ms property. The bind will be rate-limited to this value.
+    // You can set a cooldown on any bind, but it's most useful for the wheel.
+    Mod+WheelScrollDown      cooldown-ms=150 hotkey-overlay-title="切换到下一个工作区" { focus-workspace-down; }
+    Mod+WheelScrollUp        cooldown-ms=150 hotkey-overlay-title="切换到上一个工作区" { focus-workspace-up; }
+    Mod+Ctrl+WheelScrollDown cooldown-ms=150 hotkey-overlay-title="将窗口列移至下一个工作区" { move-column-to-workspace-down; }
+    Mod+Ctrl+WheelScrollUp   cooldown-ms=150 hotkey-overlay-title="将窗口列移至上一个工作区" { move-column-to-workspace-up; }
+
+    Mod+WheelScrollRight      hotkey-overlay-title="切换到右侧窗口" { focus-column-right; }
+    Mod+WheelScrollLeft       hotkey-overlay-title="切换到左侧窗口" { focus-column-left; }
+    Mod+Ctrl+WheelScrollRight hotkey-overlay-title="向右移动窗口列" { move-column-right; }
+    Mod+Ctrl+WheelScrollLeft  hotkey-overlay-title="向左移动窗口列" { move-column-left; }
+
+    // Usually scrolling up and down with Shift in applications results in
+    // horizontal scrolling; these binds replicate that.
+    Mod+Shift+WheelScrollDown      hotkey-overlay-title="切换到右侧窗口" { focus-column-right; }
+    Mod+Shift+WheelScrollUp        hotkey-overlay-title="切换到左侧窗口" { focus-column-left; }
+    Mod+Ctrl+Shift+WheelScrollDown hotkey-overlay-title="向右移动窗口列" { move-column-right; }
+    Mod+Ctrl+Shift+WheelScrollUp   hotkey-overlay-title="向左移动窗口列" { move-column-left; }
+
+    // Similarly, you can bind touchpad scroll "ticks".
+    // Touchpad scrolling is continuous, so for these binds it is split into
+    // discrete intervals.
+    // These binds are also affected by touchpad's natural-scroll, so these
+    // example binds are "inverted", since we have natural-scroll enabled for
+    // touchpads by default.
+    // Mod+TouchpadScrollDown { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.02+"; }
+    // Mod+TouchpadScrollUp   { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.02-"; }
+
+    // You can refer to workspaces by index. However, keep in mind that
+    // niri is a dynamic workspace system, so these commands are kind of
+    // "best effort". Trying to refer to a workspace index bigger than
+    // the current workspace count will instead refer to the bottommost
+    // (empty) workspace.
+    //
+    // For example, with 2 workspaces + 1 empty, indices 3, 4, 5 and so on
+    // will all refer to the 3rd workspace.
+    Mod+1 hotkey-overlay-title="切换到工作区 1" { focus-workspace 1; }
+    Mod+2 hotkey-overlay-title="切换到工作区 2" { focus-workspace 2; }
+    Mod+3 hotkey-overlay-title="切换到工作区 3" { focus-workspace 3; }
+    Mod+4 hotkey-overlay-title="切换到工作区 4" { focus-workspace 4; }
+    Mod+5 hotkey-overlay-title="切换到工作区 5" { focus-workspace 5; }
+    Mod+6 hotkey-overlay-title="切换到工作区 6" { focus-workspace 6; }
+    Mod+7 hotkey-overlay-title="切换到工作区 7" { focus-workspace 7; }
+    Mod+8 hotkey-overlay-title="切换到工作区 8" { focus-workspace 8; }
+    Mod+9 hotkey-overlay-title="切换到工作区 9" { focus-workspace 9; }
+    Mod+Ctrl+1 hotkey-overlay-title="将窗口列移至工作区 1" { move-column-to-workspace 1; }
+    Mod+Ctrl+2 hotkey-overlay-title="将窗口列移至工作区 2" { move-column-to-workspace 2; }
+    Mod+Ctrl+3 hotkey-overlay-title="将窗口列移至工作区 3" { move-column-to-workspace 3; }
+    Mod+Ctrl+4 hotkey-overlay-title="将窗口列移至工作区 4" { move-column-to-workspace 4; }
+    Mod+Ctrl+5 hotkey-overlay-title="将窗口列移至工作区 5" { move-column-to-workspace 5; }
+    Mod+Ctrl+6 hotkey-overlay-title="将窗口列移至工作区 6" { move-column-to-workspace 6; }
+    Mod+Ctrl+7 hotkey-overlay-title="将窗口列移至工作区 7" { move-column-to-workspace 7; }
+    Mod+Ctrl+8 hotkey-overlay-title="将窗口列移至工作区 8" { move-column-to-workspace 8; }
+    Mod+Ctrl+9 hotkey-overlay-title="将窗口列移至工作区 9" { move-column-to-workspace 9; }
+
+    // Alternatively, there are commands to move just a single window:
+    // Mod+Ctrl+1 { move-window-to-workspace 1; }
+
+    // Switches focus between the current and the previous workspace.
+    // Mod+Tab { focus-workspace-previous; }
+
+    // The following binds move the focused window in and out of a column.
+    // If the window is alone, they will consume it into the nearby column to the side.
+    // If the window is already in a column, they will expel it out.
+    Mod+BracketLeft  hotkey-overlay-title="合并或拆分左侧窗口" { consume-or-expel-window-left; }
+    Mod+BracketRight hotkey-overlay-title="合并或拆分右侧窗口" { consume-or-expel-window-right; }
+
+    // Consume one window from the right to the bottom of the focused column.
+    Mod+Comma  hotkey-overlay-title="将右侧窗口合并到当前列" { consume-window-into-column; }
+    // Expel the bottom window from the focused column to the right.
+    Mod+Period hotkey-overlay-title="将窗口拆分到右侧" { expel-window-from-column; }
+
+    // Cycle through widths set in preset-column-widths.
+    Mod+R hotkey-overlay-title="切换窗口列宽度" { switch-preset-column-width; }
+    // Cycling through the presets in reverse order is also possible.
+    Mod+Shift+R hotkey-overlay-title="反向切换窗口列宽度" { switch-preset-column-width-back; }
+
+    Mod+Ctrl+Shift+R hotkey-overlay-title="切换窗口高度" { switch-preset-window-height; }
+    Mod+Ctrl+R hotkey-overlay-title="重置窗口高度" { reset-window-height; }
+
+    Mod+F hotkey-overlay-title="最大化窗口列" { maximize-column; }
+    Mod+Shift+F hotkey-overlay-title="切换全屏" { fullscreen-window; }
+
+    // While maximize-column leaves gaps and borders around the window,
+    // maximize-window-to-edges doesn't: the window expands to the edges of the screen.
+    // This bind corresponds to normal window maximizing,
+    // e.g. by double-clicking on the titlebar.
+    Mod+M hotkey-overlay-title="最大化窗口" { maximize-window-to-edges; }
+
+    // Expand the focused column to space not taken up by other fully visible columns.
+    // Makes the column "fill the rest of the space".
+    Mod+Ctrl+F hotkey-overlay-title="扩展窗口列宽度" { expand-column-to-available-width; }
+
+    Mod+C hotkey-overlay-title="居中当前窗口列" { center-column; }
+
+    // Center all fully visible columns on screen.
+    Mod+Ctrl+C hotkey-overlay-title="居中可见窗口列" { center-visible-columns; }
+
+    // Finer width adjustments.
+    // This command can also:
+    // * set width in pixels: "1000"
+    // * adjust width in pixels: "-5" or "+5"
+    // * set width as a percentage of screen width: "25%"
+    // * adjust width as a percentage of screen width: "-10%" or "+10%"
+    // Pixel sizes use logical, or scaled, pixels. I.e. on an output with scale 2.0,
+    // set-column-width "100" will make the column occupy 200 physical screen pixels.
+    Mod+Minus hotkey-overlay-title="调整窗口列宽度 -10%" { set-column-width "-10%"; }
+    Mod+Equal hotkey-overlay-title="调整窗口列宽度 +10%" { set-column-width "+10%"; }
+
+    // Finer height adjustments when in column with other windows.
+    Mod+Shift+Minus hotkey-overlay-title="调整窗口高度 -10%" { set-window-height "-10%"; }
+    Mod+Shift+Equal hotkey-overlay-title="调整窗口高度 +10%" { set-window-height "+10%"; }
+
+    // Move the focused window between the floating and the tiling layout.
+    Mod+V       hotkey-overlay-title="切换浮动窗口" { toggle-window-floating; }
+    Mod+Shift+V hotkey-overlay-title="切换浮动和平铺窗口焦点" { switch-focus-between-floating-and-tiling; }
+
+    // Toggle tabbed column display mode.
+    // Windows in this column will appear as vertical tabs,
+    // rather than stacked on top of each other.
+    Mod+W hotkey-overlay-title="切换窗口标签显示" { toggle-column-tabbed-display; }
+
+    // Actions to switch layouts.
+    // Note: if you uncomment these, make sure you do NOT have
+    // a matching layout switch hotkey configured in xkb options above.
+    // Having both at once on the same hotkey will break the switching,
+    // since it will switch twice upon pressing the hotkey (once by xkb, once by niri).
+    // Mod+Space       { switch-layout "next"; }
+    // Mod+Shift+Space { switch-layout "prev"; }
+
+    // Niri's native screenshots (saved under ~/Pictures/Screenshots).
+    Mod+Shift+S hotkey-overlay-title="选择区域截图" { screenshot; }
+    Mod+Shift+4 hotkey-overlay-title="截取整个屏幕" { screenshot-screen; }
+    Mod+Shift+W repeat=false hotkey-overlay-title="Clavis 主面板" { spawn "qs" "-c" "clavis" "ipc" "call" "keystone" "hub"; }
+
+    // Quickly restart the desktop bar after editing its configuration.
+    // Mod+Shift+B is free now that Clavis replaces Waybar.
+
+    Print hotkey-overlay-title="选择区域截图" { screenshot; }
+    Ctrl+Print hotkey-overlay-title="截取整个屏幕" { screenshot-screen; }
+    Alt+Print hotkey-overlay-title="截取当前窗口" { screenshot-window; }
+
+    // Applications such as remote-desktop clients and software KVM switches may
+    // request that niri stops processing the keyboard shortcuts defined here
+    // so they may, for example, forward the key presses as-is to a remote machine.
+    // It's a good idea to bind an escape hatch to toggle the inhibitor,
+    // so a buggy application can't hold your session hostage.
+    //
+    // The allow-inhibiting=false property can be applied to other binds as well,
+    // which ensures niri always processes them, even when an inhibitor is active.
+    Mod+Escape allow-inhibiting=false hotkey-overlay-title="切换快捷键接管" { toggle-keyboard-shortcuts-inhibit; }
+
+    // The quit action will show a confirmation dialog to avoid accidental exits.
+    Mod+Shift+E hotkey-overlay-title="退出桌面" { quit; }
+    Super+Alt+Escape hotkey-overlay-title="退出桌面" { quit; }
+@PET_KILL_LINE@
+    Ctrl+Alt+Delete hotkey-overlay-title="退出桌面" { quit; }
+
+    // Powers off the monitors. To turn them back on, do any input like
+    // moving the mouse or pressing any other key.
+    Mod+Shift+P hotkey-overlay-title="关闭显示器" { power-off-monitors; }
+}
+
+// Show Clavis wallpaper inside the niri overview backdrop.
+layer-rule {
+    match namespace="^clavis-overview-wallpaper$"
+    place-within-backdrop true
+}
+
+// Clavis transparency and blur settings can write this optional fragment.
+include optional=true "clavis/effects.kdl"
+
+include "clavis/cursor.kdl";
