@@ -1,6 +1,6 @@
 # Niri + Clavis 桌面配置
 
-这是从我的 Arch Linux 桌面整理出的 Niri + [Clavis Shell](https://github.com/StatIndet/quickshell) 配置与安装脚本。包含 Niri 键位、Clavis 的个性化设置、中文 Fuzzel、Alacritty 终端主题、轻量 Bash Git 提示符、壁纸兜底，以及 Clavis 原生 QML 插件的库路径修复。
+这是从我的 Arch Linux 桌面整理出的 Niri + [Clavis Shell](https://github.com/StatIndet/quickshell) 配置与安装脚本。包含 Niri 键位、Clavis 的个性化设置、中文 Fuzzel、Alacritty 终端主题、轻量 Bash Git 提示符、交互式目录选择、壁纸兜底，以及 Clavis 原生 QML 插件的库路径修复。
 
 仓库不包含 Clavis 源码、账号密钥、个人壁纸或桌宠程序。Clavis 和 key-cli 由上游发布包安装；本仓库的模板在安装时生成当前用户的绝对路径。
 
@@ -43,6 +43,8 @@ bash install.sh --dry-run
 安装后退出当前会话，在登录界面选择 **Niri**。脚本不会强行重启现有桌面。
 
 终端使用 JetBrainsMono Nerd Font、半透明淡桃背景、柔和阴影和双行 Bash 提示符。提示符会显示当前目录、Git 分支以及未保存改动，不需要安装 Starship。已有 Bash 设置会保留；重新打开 Alacritty，或在当前终端执行 `source ~/.bashrc` 即可看到提示符。
+
+单独输入 `cd` 会打开交互式目录选择器：上下键选择，左键返回上一级继续选择，右键进入所选目录继续选择，回车最终进入，`Esc` 取消；也可以使用 `cd -i` 主动打开。输入 `cd /路径`、`cd ..`、`cd -` 时保持 Bash 原有行为。该选择器使用 `fzf`，安装脚本会自动补齐这个依赖。
 
 ## 验证与恢复
 

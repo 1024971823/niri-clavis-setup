@@ -4,6 +4,9 @@ set -euo pipefail
 niri validate -c "$HOME/.config/niri/config.kdl"
 python3 -c 'import pathlib, tomllib; tomllib.loads(pathlib.Path.home().joinpath(".config/alacritty/alacritty.toml").read_text())'
 bash -n "$HOME/.local/share/niri-clavis-setup/bash-prompt.sh"
+bash -n "$HOME/.local/share/niri-clavis-setup/cd-menu.sh"
+command -v fzf >/dev/null
+bash -ic 'declare -F __niri_cd_menu >/dev/null' >/dev/null 2>&1
 grep -q '# >>> niri-clavis-setup:terminal-prompt >>>' "$HOME/.bashrc"
 systemctl --user is-enabled --quiet clavis-shell.service
 systemctl --user is-enabled --quiet clavis-clipboard.service
