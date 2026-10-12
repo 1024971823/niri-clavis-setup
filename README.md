@@ -1,6 +1,6 @@
 # Niri + Clavis 桌面配置
 
-这是从我的 Arch Linux 桌面整理出的 Niri + [Clavis Shell](https://github.com/StatIndet/quickshell) 配置与安装脚本。包含 Niri 键位、Clavis 的个性化设置、中文 Fuzzel、Kitty 终端入口、轻量 Bash Git 提示符、交互式目录选择、壁纸兜底，以及 Clavis 原生 QML 插件的库路径修复。
+这是从我的 Arch Linux 桌面整理出的 Niri + [Clavis Shell](https://github.com/StatIndet/quickshell) 配置与安装脚本。包含 Niri 键位、Clavis 的个性化设置、中文 Fuzzel、Alacritty 终端主题、轻量 Bash Git 提示符、交互式目录选择、壁纸兜底，以及 Clavis 原生 QML 插件的库路径修复。
 
 仓库不包含 Clavis 源码、账号密钥、个人壁纸或桌宠程序。Clavis 和 key-cli 由上游发布包安装；本仓库的模板在安装时生成当前用户的绝对路径。
 
@@ -42,7 +42,7 @@ bash install.sh --dry-run
 
 安装后退出当前会话，在登录界面选择 **Niri**。脚本不会强行重启现有桌面。
 
-终端使用 Kitty，并通过 Niri 启动命令进入 tmux 多终端界面，最顶端保留白色像素渐变，下面是终端标签栏：当前标签浅蓝高亮并带蓝点，其他标签保持深色。提示符会显示当前目录、Git 分支以及未保存改动，不需要安装 Starship。本安装包不写入 `~/.config/kitty/kitty.conf`，Kitty 保持自己的默认外观与行为。已有 Bash 设置会保留；重新打开 Kitty，或在当前终端执行 `source ~/.bashrc` 即可看到提示符。
+终端使用与 Neovim 相同的 JetBrainsMono Nerd Font（字号 14）、统一的半透明深色背景、柔和阴影和双行 Bash 提示符。Alacritty 启动后自动进入 tmux 多终端界面，最顶端有一条白色像素渐变，下面是终端标签栏：当前标签浅蓝高亮并带蓝点，其他标签保持深色。提示符会显示当前目录、Git 分支以及未保存改动，不需要安装 Starship。已有 Bash 设置会保留；重新打开 Alacritty，或在当前终端执行 `source ~/.bashrc` 即可看到提示符。
 
 Niri 窗口式终端多开：`Super+T` 新建终端窗口，`Super+Tab` / `Super+Shift+Tab` 在窗口之间循环切换，`Super+,` 把右侧终端并入当前窗口组，`Super+W` 在普通平铺和多窗口标签显示之间切换，`Super+K` / `Super+J` 在标签内上下切换，`Super+.` 把底部终端拆分回独立窗口，`Super+O` 查看所有终端。
 
@@ -59,7 +59,7 @@ bash restore.sh
 
 `verify.sh` 会检查 Niri 配置、Clavis 原生插件及用户服务。在 Niri 会话内还检查状态栏和壁纸层。`restore.sh` 会恢复安装前备份的用户配置和服务启用状态；备份位于 `~/.local/state/niri-clavis-setup/backups/`。恢复后重新登录。
 
-如果 Clavis 发生启动错误，原壁纸仍由 `swaybg` 显示。`Mod+D` 保留 Fuzzel 应用菜单作为后备入口，`Mod+T` 新建 Kitty 终端窗口，窗口焦点框使用白色到浅蓝的渐变。`Super+Space` 打开 Clavis 搜索，`Mod+N` 打开信息侧栏，`Mod+A` 打开快捷设置。
+如果 Clavis 发生启动错误，原壁纸仍由 `swaybg` 显示。`Mod+D` 保留 Fuzzel 应用菜单作为后备入口，`Mod+T` 新建 Alacritty 终端窗口，窗口焦点框使用白色到浅蓝的渐变。`Super+Space` 打开 Clavis 搜索，`Mod+N` 打开信息侧栏，`Mod+A` 打开快捷设置。
 
 ## 上游与更新
 
