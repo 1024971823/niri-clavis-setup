@@ -140,6 +140,9 @@ def main() -> None:
     contents[".config/alacritty/alacritty.toml"] = (
         ROOT / "config/alacritty/alacritty.toml"
     ).read_bytes()
+    contents[".config/kitty/kitty.conf"] = (
+        ROOT / "config/kitty/kitty.conf"
+    ).read_bytes()
     contents[".config/tmux/tmux.conf"] = (ROOT / "config/tmux/tmux.conf").read_bytes()
     for source, target in (
         ("prompt.sh", "bash-prompt.sh"),
@@ -178,6 +181,21 @@ def main() -> None:
             candidate.write_bytes(data)
         subprocess.run(
             ["niri", "validate", "-c", str(candidate_root / ".config/niri/config.kdl")],
+            check=True,
+        )
+        kitty_check = (
+            "import os; from kitty.config import load_config; "
+            "bad=[]; opts=load_config(os.environ['NIRI_KITTY_CONFIG'], "
+            "accumulate_bad_lines=bad); assert not bad, bad; "
+            "assert opts.cursor_trail > 0, 'cursor trail is disabled'; "
+            "assert opts.background_opacity == 0.82, opts.background_opacity"
+        )
+        subprocess.run(
+            ["kitty", "+runpy", kitty_check],
+            env=dict(
+                os.environ,
+                NIRI_KITTY_CONFIG=str(candidate_root / ".config/kitty/kitty.conf"),
+            ),
             check=True,
         )
 

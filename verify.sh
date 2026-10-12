@@ -3,6 +3,19 @@ set -euo pipefail
 
 niri validate -c "$HOME/.config/niri/config.kdl"
 python3 -c 'import pathlib, tomllib; tomllib.loads(pathlib.Path.home().joinpath(".config/alacritty/alacritty.toml").read_text())'
+command -v kitty >/dev/null
+NIRI_KITTY_CONFIG="$HOME/.config/kitty/kitty.conf" kitty +runpy '
+import os
+from kitty.config import load_config
+bad = []
+opts = load_config(os.environ["NIRI_KITTY_CONFIG"], accumulate_bad_lines=bad)
+assert not bad, bad
+assert opts.cursor_trail > 0, "cursor trail is disabled"
+assert opts.cursor_trail_decay == (0.12, 0.42), opts.cursor_trail_decay
+assert opts.background_opacity == 0.82, opts.background_opacity
+assert opts.font_size == 14.0, opts.font_size
+'
+grep -q 'Mod+T.*spawn "kitty"' "$HOME/.config/niri/config.kdl"
 command -v tmux >/dev/null
 tmux -f "$HOME/.config/tmux/tmux.conf" -L niri-clavis-verify new-session -d
 [[ $(tmux -L niri-clavis-verify show -gv status) == 2 ]]

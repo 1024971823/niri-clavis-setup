@@ -283,7 +283,7 @@ spawn-at-startup "/usr/lib/polkit-kde-authentication-agent-1"
 // Keep the existing wallpaper visible while Clavis starts or if it fails.
 spawn-at-startup "swaybg" "-i" "@WALLPAPER@" "-m" "fill"
 spawn-at-startup "swayidle" "-w" "timeout" "900" "swaylock -f -c 1e1e2e" "before-sleep" "swaylock -f -c 1e1e2e"
-spawn-at-startup "alacritty"
+spawn-at-startup "kitty"
 @PET_START_LINE@
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
@@ -384,8 +384,8 @@ binds {
     Mod+Shift+Slash hotkey-overlay-title="显示快捷键提示" { show-hotkey-overlay; }
 
     // Suggested binds for running programs: terminal, app launcher, screen locker.
-    Mod+T hotkey-overlay-title="新建终端窗口" { spawn "alacritty"; }
-    Mod+Ctrl+T hotkey-overlay-title="新建终端窗口" { spawn "alacritty"; }
+    Mod+T hotkey-overlay-title="新建终端窗口" { spawn "kitty"; }
+    Mod+Ctrl+T hotkey-overlay-title="新建终端窗口" { spawn "kitty"; }
 
     // Clavis shell controls. Mod+D still opens Fuzzel as a fallback.
     Mod+Slash repeat=false hotkey-overlay-title="Clavis 快捷键" { spawn "qs" "-c" "clavis" "ipc" "call" "shortcut-map" "toggle"; }
@@ -398,7 +398,7 @@ binds {
     Mod+Shift+T repeat=false hotkey-overlay-title="Clavis 工具" { spawn "qs" "-c" "clavis" "ipc" "call" "keystone" "tools"; }
     Alt+Shift+L repeat=false hotkey-overlay-title="Clavis 锁屏" { spawn "qs" "-c" "clavis" "ipc" "call" "lock" "open"; }
 
-    Super+Return hotkey-overlay-title="打开终端" { spawn "alacritty"; }
+    Super+Return hotkey-overlay-title="打开终端" { spawn "kitty"; }
     Mod+D hotkey-overlay-title="打开应用菜单" { spawn "fuzzel" "--config" "@HOME@/.config/niri/fuzzel-zh.ini"; }
     Super+Space repeat=false hotkey-overlay-title="Clavis 搜索" { spawn "qs" "-c" "clavis" "ipc" "call" "spotlight" "toggle"; }
     Super+Alt+L hotkey-overlay-title="锁定屏幕" { spawn "swaylock"; }
