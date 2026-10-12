@@ -24,6 +24,8 @@ grep -q 'status-format\[1\].*status-left' <(tmux -L niri-clavis-verify show -g s
 tmux -L niri-clavis-verify kill-server
 bash -n "$HOME/.local/share/niri-clavis-setup/bash-prompt.sh"
 bash -n "$HOME/.local/share/niri-clavis-setup/cd-menu.sh"
+bash -n "$HOME/.local/share/niri-clavis-setup/command-completion.sh"
+bash -n "$HOME/.local/share/niri-clavis-setup/completion-preview.sh"
 grep -q '󰣇' "$HOME/.local/share/niri-clavis-setup/bash-prompt.sh"
 grep -q '__niri_git_prompt' "$HOME/.local/share/niri-clavis-setup/bash-prompt.sh"
 PROMPT_SCRIPT="$HOME/.local/share/niri-clavis-setup/bash-prompt.sh" python3 - <<'PY'
@@ -71,7 +73,28 @@ with tempfile.TemporaryDirectory(prefix='niri-prompt-check-') as fixture:
         raise SystemExit(f'Unexpected Git prompt summary: {result}')
 PY
 command -v fzf >/dev/null
-bash -ic 'declare -F __niri_cd_menu >/dev/null' >/dev/null 2>&1
+bash -ic 'declare -F __niri_cd_menu >/dev/null && declare -F __niri_complete_current_word >/dev/null' >/dev/null 2>&1
+bash "$HOME/.local/share/niri-clavis-setup/completion-preview.sh" git --help | grep -qi 'usage\|用法'
+bash --noprofile --norc <<'SH'
+set -e
+source "$HOME/.local/share/niri-clavis-setup/command-completion.sh"
+fzf() {
+    cat >/dev/null
+    if [[ $__NIRI_COMPLETE_COMMAND == git ]]; then
+        printf '%s\n' --help
+    else
+        printf '%s\n' kitty
+    fi
+}
+READLINE_LINE='kitt'
+READLINE_POINT=4
+__niri_complete_current_word
+[[ $READLINE_LINE == kitty && $READLINE_POINT == 5 ]]
+READLINE_LINE='git --h'
+READLINE_POINT=7
+__niri_complete_current_word
+[[ $READLINE_LINE == 'git --help' && $READLINE_POINT == 10 ]]
+SH
 grep -q '# >>> niri-clavis-setup:terminal-prompt >>>' "$HOME/.bashrc"
 systemctl --user is-enabled --quiet clavis-shell.service
 systemctl --user is-enabled --quiet clavis-clipboard.service

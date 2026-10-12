@@ -1,6 +1,6 @@
 # Niri + Clavis 桌面配置
 
-这是从我的 Arch Linux 桌面整理出的 Niri + [Clavis Shell](https://github.com/StatIndet/quickshell) 配置与安装脚本。包含 Niri 键位、Clavis 的个性化设置、中文 Fuzzel、Kitty 终端主题、轻量 Bash Git 提示符、交互式目录选择、壁纸兜底，以及 Clavis 原生 QML 插件的库路径修复。
+这是从我的 Arch Linux 桌面整理出的 Niri + [Clavis Shell](https://github.com/StatIndet/quickshell) 配置与安装脚本。包含 Niri 键位、Clavis 的个性化设置、中文 Fuzzel、Kitty 终端主题、轻量 Bash Git 提示符、交互式目录选择、带实时预览的 Bash 指令补全、壁纸兜底，以及 Clavis 原生 QML 插件的库路径修复。
 
 仓库不包含 Clavis 源码、账号密钥、个人壁纸或桌宠程序。Clavis 和 key-cli 由上游发布包安装；本仓库的模板在安装时生成当前用户的绝对路径。
 
@@ -47,6 +47,8 @@ bash install.sh --dry-run
 Niri 窗口式终端多开：`Super+T` 新建终端窗口，`Super+Tab` / `Super+Shift+Tab` 在窗口之间循环切换，`Super+,` 把右侧终端并入当前窗口组，`Super+W` 在普通平铺和多窗口标签显示之间切换，`Super+K` / `Super+J` 在标签内上下切换，`Super+.` 把底部终端拆分回独立窗口，`Super+O` 查看所有终端。
 
 终端内标签多开：`Ctrl+B` 再按 `C` 新建标签，`Ctrl+B` 再按 `Tab` / `N` / `P` 或左右方向键切换标签，`Ctrl+B` 再按数字键直接跳转，`Ctrl+B` 再按 `Q` 显示标签列表，`Ctrl+B` 再按 `,` 重命名，`Ctrl+B` 再按 `X` 关闭当前标签；也可以用 `Alt+1` 到 `Alt+9` 直接切换。多个独立终端窗口用 `Super+T`（或 `Super+Enter`）创建，`Mod+O` 打开 Niri 多窗口概览。
+
+在终端按 `Ctrl+Space`（或 `Alt+/`）打开指令预览补全：命令位置会列出可执行命令，参数位置会列出文件、目录、变量和命令选项；右侧实时显示命令帮助、文件内容或目录列表，上下键选择后回车插入，`Esc` 取消。原来的 `Tab` 补全行为保持不变。
 
 单独输入 `cd` 会打开交互式目录选择器：上下键选择，左键返回上一级继续选择，右键进入所选目录继续选择，回车最终进入，`Esc` 取消；也可以使用 `cd -i` 主动打开。输入 `cd /路径`、`cd ..`、`cd -` 时保持 Bash 原有行为。该选择器使用 `fzf`，安装脚本会自动补齐这个依赖。
 
