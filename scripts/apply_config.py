@@ -58,7 +58,7 @@ def upsert_bash_terminal_helpers(current: bytes) -> bytes:
     block = (
         f"{start}\n"
         "if [[ $- == *i* ]]; then\n"
-        "    for terminal_helper in bash-prompt.sh cd-menu.sh command-completion.sh; do\n"
+        "    for terminal_helper in bash-prompt.sh cd-menu.sh command-completion.sh autosuggest.sh; do\n"
         "        [[ -f \"$HOME/.local/share/niri-clavis-setup/$terminal_helper\" ]] &&\n"
         "            . \"$HOME/.local/share/niri-clavis-setup/$terminal_helper\"\n"
         "    done\n"
@@ -149,6 +149,7 @@ def main() -> None:
         ("cd-menu.sh", "cd-menu.sh"),
         ("command-completion.sh", "command-completion.sh"),
         ("completion-preview.sh", "completion-preview.sh"),
+        ("autosuggest.sh", "autosuggest.sh"),
     ):
         contents[f".local/share/niri-clavis-setup/{target}"] = (
             ROOT / "config/bash" / source

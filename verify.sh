@@ -26,6 +26,11 @@ bash -n "$HOME/.local/share/niri-clavis-setup/bash-prompt.sh"
 bash -n "$HOME/.local/share/niri-clavis-setup/cd-menu.sh"
 bash -n "$HOME/.local/share/niri-clavis-setup/command-completion.sh"
 bash -n "$HOME/.local/share/niri-clavis-setup/completion-preview.sh"
+bash -n "$HOME/.local/share/niri-clavis-setup/autosuggest.sh"
+python3 "$(dirname "$0")/scripts/install_blesh.py" --check
+grep -q 'bleopt complete_auto_complete=1' "$HOME/.local/share/niri-clavis-setup/autosuggest.sh"
+grep -q 'bleopt complete_auto_menu=220' "$HOME/.local/share/niri-clavis-setup/autosuggest.sh"
+grep -q "ble-face auto_complete='fg=243'" "$HOME/.local/share/niri-clavis-setup/autosuggest.sh"
 grep -q '󰣇' "$HOME/.local/share/niri-clavis-setup/bash-prompt.sh"
 grep -q '__niri_git_prompt' "$HOME/.local/share/niri-clavis-setup/bash-prompt.sh"
 PROMPT_SCRIPT="$HOME/.local/share/niri-clavis-setup/bash-prompt.sh" python3 - <<'PY'

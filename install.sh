@@ -106,6 +106,12 @@ SH
         swaybg swayidle swaylock playerctl brightnessctl
 fi
 
+if $dry_run; then
+    python3 "$root/scripts/install_blesh.py" --dry-run
+else
+    python3 "$root/scripts/install_blesh.py"
+fi
+
 options=()
 [[ -z $wallpaper ]] || options+=(--wallpaper "$wallpaper")
 [[ -z $pet_start ]] || options+=(--pet-start "$pet_start")
