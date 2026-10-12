@@ -3,6 +3,12 @@ set -euo pipefail
 
 niri validate -c "$HOME/.config/niri/config.kdl"
 python3 -c 'import pathlib, tomllib; tomllib.loads(pathlib.Path.home().joinpath(".config/alacritty/alacritty.toml").read_text())'
+command -v tmux >/dev/null
+tmux -f "$HOME/.config/tmux/tmux.conf" -L niri-clavis-verify new-session -d
+[[ $(tmux -L niri-clavis-verify show -gv status) == 2 ]]
+grep -q 'status-format\[0\].*#\[fill=#fff8f5' <(tmux -L niri-clavis-verify show -g status-format)
+grep -q 'status-format\[1\].*status-left' <(tmux -L niri-clavis-verify show -g status-format)
+tmux -L niri-clavis-verify kill-server
 bash -n "$HOME/.local/share/niri-clavis-setup/bash-prompt.sh"
 bash -n "$HOME/.local/share/niri-clavis-setup/cd-menu.sh"
 command -v fzf >/dev/null

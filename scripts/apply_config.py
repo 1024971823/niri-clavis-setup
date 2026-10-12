@@ -140,6 +140,7 @@ def main() -> None:
     contents[".config/alacritty/alacritty.toml"] = (
         ROOT / "config/alacritty/alacritty.toml"
     ).read_bytes()
+    contents[".config/tmux/tmux.conf"] = (ROOT / "config/tmux/tmux.conf").read_bytes()
     for source, target in (
         ("prompt.sh", "bash-prompt.sh"),
         ("cd-menu.sh", "cd-menu.sh"),

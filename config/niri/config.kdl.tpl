@@ -174,6 +174,7 @@ layout {
 
         // Color of the ring on the active monitor.
         active-color "#89b4fa"
+        active-gradient from="#fff8f5" to="#bfe8ed" angle=45 relative-to="workspace-view"
 
         // Color of the ring on inactive monitors.
         //
@@ -383,7 +384,8 @@ binds {
     Mod+Shift+Slash hotkey-overlay-title="显示快捷键提示" { show-hotkey-overlay; }
 
     // Suggested binds for running programs: terminal, app launcher, screen locker.
-    Mod+T hotkey-overlay-title="打开终端" { spawn "alacritty"; }
+    Mod+T hotkey-overlay-title="新建终端窗口" { spawn "alacritty"; }
+    Mod+Ctrl+T hotkey-overlay-title="新建终端窗口" { spawn "alacritty"; }
 
     // Clavis shell controls. Mod+D still opens Fuzzel as a fallback.
     Mod+Slash repeat=false hotkey-overlay-title="Clavis 快捷键" { spawn "qs" "-c" "clavis" "ipc" "call" "shortcut-map" "toggle"; }
@@ -573,7 +575,8 @@ binds {
     // Mod+Ctrl+1 { move-window-to-workspace 1; }
 
     // Switches focus between the current and the previous workspace.
-    // Mod+Tab { focus-workspace-previous; }
+    Mod+Tab hotkey-overlay-title="切换到右侧窗口" { focus-column-right-or-first; }
+    Mod+Shift+Tab hotkey-overlay-title="切换到左侧窗口" { focus-column-left-or-last; }
 
     // The following binds move the focused window in and out of a column.
     // If the window is alone, they will consume it into the nearby column to the side.
@@ -634,7 +637,7 @@ binds {
     // Toggle tabbed column display mode.
     // Windows in this column will appear as vertical tabs,
     // rather than stacked on top of each other.
-    Mod+W hotkey-overlay-title="切换窗口标签显示" { toggle-column-tabbed-display; }
+    Mod+W hotkey-overlay-title="切换多窗口标签显示" { toggle-column-tabbed-display; }
 
     // Actions to switch layouts.
     // Note: if you uncomment these, make sure you do NOT have

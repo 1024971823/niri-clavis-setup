@@ -48,7 +48,7 @@ for command in curl sha256sum systemctl; do
     command -v "$command" >/dev/null || { echo "Missing command: $command" >&2; exit 1; }
 done
 if $config_only; then
-    for command in python3 niri fzf; do
+    for command in python3 niri fzf tmux; do
         command -v "$command" >/dev/null || { echo "Missing command: $command" >&2; exit 1; }
     done
 fi
@@ -102,7 +102,7 @@ SH
     fi
 
     sudo pacman -S --needed --noconfirm \
-        alacritty fcitx5 fzf fuzzel polkit-kde-agent ttf-jetbrains-mono-nerd \
+        alacritty fcitx5 fzf fuzzel polkit-kde-agent ttf-jetbrains-mono-nerd tmux \
         swaybg swayidle swaylock playerctl brightnessctl
 fi
 
