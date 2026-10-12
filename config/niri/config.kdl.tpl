@@ -330,6 +330,13 @@ window-rule {
     clip-to-geometry true
 }
 
+// Keep Kitty's semitransparent background consistent in normal tiled windows.
+// Niri otherwise paints a solid rectangle behind the focused window's ring.
+window-rule {
+    match app-id=r#"^kitty$"#
+    draw-border-with-background false
+}
+
 // Work around WezTerm's initial configure bug
 // by setting an empty default-column-width.
 window-rule {

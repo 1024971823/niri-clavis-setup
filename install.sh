@@ -102,14 +102,16 @@ SH
     fi
 
     sudo pacman -S --needed --noconfirm \
-        fcitx5 fzf fuzzel kitty polkit-kde-agent ttf-jetbrains-mono-nerd tmux \
+        bash-completion fcitx5 fzf fuzzel kitty polkit-kde-agent ttf-jetbrains-mono-nerd tmux \
         swaybg swayidle swaylock playerctl brightnessctl
 fi
 
 if $dry_run; then
     python3 "$root/scripts/install_blesh.py" --dry-run
+    python3 "$root/scripts/install_bash_completion.py" --dry-run
 else
     python3 "$root/scripts/install_blesh.py"
+    python3 "$root/scripts/install_bash_completion.py"
 fi
 
 options=()

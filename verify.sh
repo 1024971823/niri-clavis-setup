@@ -16,6 +16,11 @@ assert opts.background_opacity == 0.82, opts.background_opacity
 assert opts.font_size == 14.0, opts.font_size
 '
 grep -q 'Mod+T.*spawn "kitty"' "$HOME/.config/niri/config.kdl"
+grep -Fq 'match app-id=r#"^kitty$"#' "$HOME/.config/niri/config.kdl"
+grep -q 'draw-border-with-background false' "$HOME/.config/niri/config.kdl"
+grep -Fq 'bg+:-1' "$HOME/.local/share/niri-clavis-setup/command-completion.sh"
+grep -Fq 'ble widget auto-complete-enter' "$HOME/.local/share/niri-clavis-setup/command-completion.sh"
+bash -ic 'declare -F _comp_load >/dev/null' >/dev/null 2>&1
 command -v tmux >/dev/null
 tmux -f "$HOME/.config/tmux/tmux.conf" -L niri-clavis-verify new-session -d
 [[ $(tmux -L niri-clavis-verify show -gv status) == 2 ]]
@@ -29,7 +34,7 @@ bash -n "$HOME/.local/share/niri-clavis-setup/completion-preview.sh"
 bash -n "$HOME/.local/share/niri-clavis-setup/autosuggest.sh"
 python3 "$(dirname "$0")/scripts/install_blesh.py" --check
 grep -q 'bleopt complete_auto_complete=1' "$HOME/.local/share/niri-clavis-setup/autosuggest.sh"
-grep -q 'bleopt complete_auto_menu=220' "$HOME/.local/share/niri-clavis-setup/autosuggest.sh"
+grep -q 'bleopt complete_auto_menu=160' "$HOME/.local/share/niri-clavis-setup/autosuggest.sh"
 grep -q "ble-face auto_complete='fg=243'" "$HOME/.local/share/niri-clavis-setup/autosuggest.sh"
 grep -q '󰣇' "$HOME/.local/share/niri-clavis-setup/bash-prompt.sh"
 grep -q '__niri_git_prompt' "$HOME/.local/share/niri-clavis-setup/bash-prompt.sh"

@@ -122,7 +122,7 @@ __niri_complete_current_word() {
                 --header="Ctrl+Space / Alt+/ 打开    ↑↓ 选择    Enter 补全    Esc 取消" \
                 --info=inline-right \
                 --no-multi \
-                --color='fg:#fff8f5,bg:#2d2420,hl:#bfe8ed,fg+:#2d2420,bg+:#bfe8ed,hl+:#2d2420,info:#c4874c,border:#62534c,prompt:#5c9fb1,pointer:#d57a58' \
+                --color='fg:#fff8f5,bg:-1,hl:#bfe8ed,fg+:#bfe8ed,bg+:-1,hl+:#fff8f5,info:#c4874c,border:#62534c,prompt:#5c9fb1,pointer:#d57a58' \
                 --preview="bash \"$HOME/.local/share/niri-clavis-setup/completion-preview.sh\" \"\$__NIRI_COMPLETE_COMMAND\" {}" \
                 --preview-window='right,60%,border-left'
     )
@@ -138,6 +138,11 @@ __niri_complete_current_word() {
 
     READLINE_LINE=${line:0:word_start}${replacement}${line:cursor}
     READLINE_POINT=$((word_start + ${#replacement}))
+
+    # Immediately refresh the inline suggestion after an explicit selection.
+    if [[ $(type -t ble) == function ]] && declare -F ble/widget/auto-complete-enter >/dev/null 2>&1; then
+        ble widget auto-complete-enter >/dev/null 2>&1 || true
+    fi
 }
 
 if [[ $- == *i* ]]; then

@@ -13,14 +13,25 @@ do
     fi
 done
 
+# Programmable command completion supplies command-specific arguments and options.
+for __niri_bash_completion in \
+    /usr/share/bash-completion/bash_completion \
+    "$HOME/.local/share/niri-clavis-setup/bash-completion/usr/share/bash-completion/bash_completion"
+do
+    if [[ -r $__niri_bash_completion ]]; then
+        source "$__niri_bash_completion"
+        break
+    fi
+done
+
 if [[ -n $__niri_blesh ]]; then
     # --norc keeps these settings deterministic while preserving user inputrc keys.
     source "$__niri_blesh" --norc
 
     bleopt complete_auto_complete=1
-    bleopt complete_auto_delay=120
+    bleopt complete_auto_delay=80
     bleopt complete_auto_history=1
-    bleopt complete_auto_menu=220
+    bleopt complete_auto_menu=160
     bleopt complete_limit_auto=2000
     bleopt complete_limit_auto_menu=200
     bleopt complete_menu_filter=1
@@ -38,4 +49,4 @@ if [[ -n $__niri_blesh ]]; then
     fi
 fi
 
-unset __niri_blesh __niri_blesh_candidate
+unset __niri_bash_completion __niri_blesh __niri_blesh_candidate
