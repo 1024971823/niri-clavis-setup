@@ -137,9 +137,6 @@ def main() -> None:
     contents[".config/niri/config.kdl"] = niri.encode()
     for name in ("fuzzel-zh.ini", "clavis/effects.kdl", "clavis/cursor.kdl"):
         contents[f".config/niri/{name}"] = (ROOT / "config/niri" / name).read_bytes()
-    contents[".config/alacritty/alacritty.toml"] = (
-        ROOT / "config/alacritty/alacritty.toml"
-    ).read_bytes()
     contents[".config/tmux/tmux.conf"] = (ROOT / "config/tmux/tmux.conf").read_bytes()
     for source, target in (
         ("prompt.sh", "bash-prompt.sh"),

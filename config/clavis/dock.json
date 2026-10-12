@@ -25,7 +25,7 @@
     },
     {
       "kind": "app",
-      "desktopId": "Alacritty"
+      "desktopId": "kitty"
     },
     {
       "kind": "app",
