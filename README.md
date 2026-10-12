@@ -42,7 +42,7 @@ bash install.sh --dry-run
 
 安装后退出当前会话，在登录界面选择 **Niri**。脚本不会强行重启现有桌面。
 
-终端使用与 Neovim 相同的 JetBrainsMono Nerd Font（字号 14）、统一的半透明深色背景、柔和阴影和双行 Bash 提示符。Alacritty 启动后自动进入 tmux 多终端界面，最顶端有一条白色像素渐变，下面是终端标签栏：当前标签浅蓝高亮并带蓝点，其他标签保持深色。提示符会显示当前目录、Git 分支以及未保存改动，不需要安装 Starship。已有 Bash 设置会保留；重新打开 Alacritty，或在当前终端执行 `source ~/.bashrc` 即可看到提示符。
+终端使用与 Neovim 相同的 JetBrainsMono Nerd Font（字号 14）、统一的半透明深色背景、柔和阴影和双行 Bash 提示符。Alacritty 启动后自动进入 tmux 多终端界面，最顶端有一条白色像素渐变，下面是终端标签栏：当前标签浅蓝高亮并带蓝点，其他标签保持深色。提示符左下角用 Arch Linux 图标显示当前目录；进入 Git 仓库后还会显示分支、`+N` 已暂存、`~N` 未暂存、`?N` 未跟踪、`!N` 冲突、`⇡N` 领先远端和 `⇣N` 落后远端，干净仓库显示 `✓`。不需要安装 Starship。已有 Bash 设置会保留；重新打开 Alacritty，或在当前终端执行 `source ~/.bashrc` 即可看到提示符。
 
 Niri 窗口式终端多开：`Super+T` 新建终端窗口，`Super+Tab` / `Super+Shift+Tab` 在窗口之间循环切换，`Super+,` 把右侧终端并入当前窗口组，`Super+W` 在普通平铺和多窗口标签显示之间切换，`Super+K` / `Super+J` 在标签内上下切换，`Super+.` 把底部终端拆分回独立窗口，`Super+O` 查看所有终端。
 
