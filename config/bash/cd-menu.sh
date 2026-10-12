@@ -30,7 +30,7 @@ __niri_cd_menu() {
                     --prompt='进入目录 > ' \
                     --header="目录：$root    ↑↓ 选择    ← 上级    → 打开    Enter 进入    Esc 取消" \
                     --info=inline-right \
-                    --preview='command ls -la --color=always -- "$__NIRI_CD_MENU_ROOT/{}"' \
+                    --preview='item={}; command ls -la --color=always -- "$__NIRI_CD_MENU_ROOT/$item"' \
                     --preview-window='right,55%,border-left' \
                     --expect=left,right \
                     --no-multi

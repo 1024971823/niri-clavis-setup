@@ -1,6 +1,6 @@
 [window]
 decorations = "None"
-opacity = 0.88
+opacity = 0.82
 blur = true
 dynamic_padding = true
 title = "Terminal"
@@ -29,10 +29,10 @@ family = "JetBrainsMono Nerd Font Mono"
 style = "Bold Italic"
 
 [colors.primary]
-background = "#fff8f5"
-foreground = "#2d2420"
-dim_foreground = "#84746a"
-bright_foreground = "#40312a"
+background = "#2d2420"
+foreground = "#fff8f5"
+dim_foreground = "#bdb0a8"
+bright_foreground = "#fff8f5"
 
 [colors.cursor]
 text = "#fff8f5"
@@ -67,17 +67,17 @@ text = "#2d2420"
 background = "#bfe8ed"
 
 [colors.normal]
-black = "#40312a"
-red = "#c64b4b"
-green = "#64723b"
-yellow = "#a2652d"
-blue = "#397c91"
-magenta = "#b75b78"
-cyan = "#2f887e"
-white = "#e9dcd4"
+black = "#62534c"
+red = "#e06d6d"
+green = "#87964f"
+yellow = "#c4874c"
+blue = "#5c9fb1"
+magenta = "#d57a58"
+cyan = "#52a99d"
+white = "#fff8f5"
 
 [colors.bright]
-black = "#84746a"
+black = "#62534c"
 red = "#e06d6d"
 green = "#87964f"
 yellow = "#c4874c"
