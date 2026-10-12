@@ -102,7 +102,7 @@ SH
     fi
 
     sudo pacman -S --needed --noconfirm \
-        alacritty fcitx5 fuzzel polkit-kde-agent \
+        alacritty fcitx5 fuzzel polkit-kde-agent ttf-jetbrains-mono-nerd \
         swaybg swayidle swaylock playerctl brightnessctl
 fi
 

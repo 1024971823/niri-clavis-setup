@@ -8,6 +8,7 @@ from datetime import datetime
 import json
 import os
 from pathlib import Path
+import re
 import shutil
 import struct
 import subprocess
@@ -48,6 +49,23 @@ def shell_escape(value: str) -> str:
 
 def service_enabled(name: str) -> bool:
     return subprocess.run(["systemctl", "--user", "is-enabled", "--quiet", name]).returncode == 0
+
+
+def upsert_bash_prompt(current: bytes) -> bytes:
+    """Add or refresh a managed prompt block without replacing user settings."""
+    start = "# >>> niri-clavis-setup:terminal-prompt >>>"
+    end = "# <<< niri-clavis-setup:terminal-prompt <<<"
+    prompt = (ROOT / "config/bash/prompt.sh").read_text().rstrip()
+    block = f"{start}\nif [[ $- == *i* && -f \"$HOME/.local/share/niri-clavis-setup/bash-prompt.sh\" ]]; then\n    . \"$HOME/.local/share/niri-clavis-setup/bash-prompt.sh\"\nfi\n{end}"
+    text = current.decode()
+    text = re.sub(
+        re.escape(start) + r".*?" + re.escape(end) + r"\n?",
+        "",
+        text,
+        flags=re.DOTALL,
+    )
+    text = f"{text.rstrip()}\n\n{block}\n"
+    return text.encode()
 
 
 def library_path() -> str:
@@ -111,6 +129,14 @@ def main() -> None:
     contents[".config/niri/config.kdl"] = niri.encode()
     for name in ("fuzzel-zh.ini", "clavis/effects.kdl", "clavis/cursor.kdl"):
         contents[f".config/niri/{name}"] = (ROOT / "config/niri" / name).read_bytes()
+    contents[".config/alacritty/alacritty.toml"] = (
+        ROOT / "config/alacritty/alacritty.toml"
+    ).read_bytes()
+    contents[".local/share/niri-clavis-setup/bash-prompt.sh"] = (
+        ROOT / "config/bash/prompt.sh"
+    ).read_bytes()
+    bashrc = home / ".bashrc"
+    contents[".bashrc"] = upsert_bash_prompt(bashrc.read_bytes() if bashrc.is_file() else b"")
 
     for template in (ROOT / "config/clavis").glob("*.json"):
         value = json.loads(template.read_text())
