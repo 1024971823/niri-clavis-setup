@@ -24,9 +24,8 @@ do
     fi
 done
 
-if [[ -n $__niri_blesh ]]; then
+if [[ -n $__niri_blesh ]] && source "$__niri_blesh" --norc; then
     # --norc keeps these settings deterministic while preserving user inputrc keys.
-    source "$__niri_blesh" --norc
 
     bleopt complete_auto_complete=1
     bleopt complete_auto_delay=80
@@ -47,6 +46,11 @@ if [[ -n $__niri_blesh ]]; then
         ble-bind -m vi_imap -x 'C-SP' '__niri_complete_current_word'
         ble-bind -m vi_imap -x 'M-/' '__niri_complete_current_word'
     fi
+elif [[ $- == *i* ]]; then
+    bind 'set show-all-if-ambiguous on' >/dev/null 2>&1 || true
+    bind 'set colored-stats on' >/dev/null 2>&1 || true
+    bind 'set menu-complete-display-prefix on' >/dev/null 2>&1 || true
+    bind 'TAB:menu-complete' >/dev/null 2>&1 || true
 fi
 
 unset __niri_bash_completion __niri_blesh __niri_blesh_candidate

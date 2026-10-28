@@ -76,7 +76,7 @@ __niri_completion_candidates() {
 
 __niri_complete_current_word() {
     command -v fzf >/dev/null 2>&1 || {
-        printf '\n命令补全需要 fzf，请重新运行安装脚本。\n' >&2
+        printf '\n命令补全需要 fzf，当前环境里没有可用的 fzf。\n' >&2
         return 127
     }
 

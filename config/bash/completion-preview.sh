@@ -48,7 +48,7 @@ preview_path() {
 
     if [[ -d $resolved ]]; then
         printf '目录：%s\n\n' "$resolved"
-        command ls -la --color=always -- "$resolved"
+        command ls -la --color=always -- "$resolved" 2>/dev/null || command ls -la -- "$resolved"
     elif [[ -f $resolved ]]; then
         printf '文件：%s\n' "$resolved"
         file --brief -- "$resolved"

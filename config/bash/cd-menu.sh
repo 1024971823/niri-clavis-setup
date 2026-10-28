@@ -2,7 +2,7 @@
 
 __niri_cd_menu() {
     if ! command -v fzf >/dev/null 2>&1; then
-        printf '目录选择器需要 fzf，请重新运行安装脚本。\n' >&2
+        printf '目录选择器需要 fzf，当前环境里没有可用的 fzf。\n' >&2
         return 127
     fi
 
@@ -31,7 +31,7 @@ __niri_cd_menu() {
                     --header="目录：$root    ↑↓ 选择    ← 上级    → 打开    Enter 进入    Esc 取消" \
                     --info=inline-right \
                     --color='fg:#fff8f5,bg:-1,hl:#bfe8ed,fg+:#bfe8ed,bg+:-1,hl+:#fff8f5,info:#c4874c,border:#62534c,prompt:#5c9fb1,pointer:#d57a58' \
-                    --preview='item={}; command ls -la --color=always -- "$__NIRI_CD_MENU_ROOT/$item"' \
+                    --preview='item={}; command ls -la --color=always -- "$__NIRI_CD_MENU_ROOT/$item" 2>/dev/null || command ls -la -- "$__NIRI_CD_MENU_ROOT/$item"' \
                     --preview-window='right,55%,border-left' \
                     --expect=left,right \
                     --no-multi
