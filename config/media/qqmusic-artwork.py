@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Fill missing QQ Music artwork using its public catalogue, without account data."""
 import html
+import argparse
 import json
 import os
 from pathlib import Path
@@ -66,6 +67,22 @@ class Bridge:
     def call(self, destination, path, interface, method, args=None):
         return self.bus.call_sync(destination, path, interface, method, args, None,
                                   Gio.DBusCallFlags.NONE, 1500, None).unpack()
+
+    def control(self, player, action):
+        if action not in ("Play", "Pause", "PlayPause", "Next", "Previous"):
+            raise ValueError("Unsupported media action")
+        if not player.startswith("org.mpris.MediaPlayer2."):
+            raise ValueError("Not a media player")
+        # Pin to the current unique owner, avoiding name reuse between checks.
+        owner = self.call("org.freedesktop.DBus", "/org/freedesktop/DBus",
+                          "org.freedesktop.DBus", "GetNameOwner",
+                          GLib.Variant("(s)", (player,)))[0]
+        pid = self.call("org.freedesktop.DBus", "/org/freedesktop/DBus",
+                        "org.freedesktop.DBus", "GetConnectionUnixProcessID",
+                        GLib.Variant("(s)", (owner,)))[0]
+        if Path(f"/proc/{pid}/comm").read_text().strip().lower() != "qqmusic":
+            raise ValueError("Control workaround is restricted to QQ Music")
+        self.call(owner, "/org/mpris/MediaPlayer2", "org.mpris.MediaPlayer2.Player", action)
 
     def players(self):
         names = self.call("org.freedesktop.DBus", "/org/freedesktop/DBus",
@@ -136,7 +153,16 @@ class Bridge:
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--control", choices=("Play", "Pause", "PlayPause", "Next", "Previous"))
+    parser.add_argument("--player")
+    args = parser.parse_args()
+    if bool(args.control) != bool(args.player):
+        parser.error("--control and --player must be used together")
     bridge = Bridge()
+    if args.control:
+        bridge.control(args.player, args.control)
+        raise SystemExit(0)
     while True:
         try:
             bridge.tick()

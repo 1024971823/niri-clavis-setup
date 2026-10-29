@@ -52,6 +52,21 @@ class ArtworkTests(unittest.TestCase):
             bridge.tick()
         lookup.assert_not_called()
 
+    def test_control_pins_owner_and_only_accepts_qqmusic(self):
+        bridge = object.__new__(art.Bridge)
+        with patch.object(bridge, "call", side_effect=[(":1.123",), (123,), ()]) as call, \
+                patch.object(Path, "read_text", return_value="qqmusic\n"):
+            bridge.control("org.mpris.MediaPlayer2.chromium.example", "Next")
+        self.assertEqual(call.call_args.args, (":1.123", "/org/mpris/MediaPlayer2",
+                                              "org.mpris.MediaPlayer2.Player", "Next"))
+        with patch.object(bridge, "call", side_effect=[(":1.123",), (123,)]) as call, \
+                patch.object(Path, "read_text", return_value="chromium\n"):
+            with self.assertRaises(ValueError):
+                bridge.control("org.mpris.MediaPlayer2.chromium.example", "Pause")
+        self.assertEqual(call.call_count, 2)
+        with self.assertRaises(ValueError):
+            bridge.control("org.mpris.MediaPlayer2.chromium.example", "Quit")
+
 
 class InstallTests(unittest.TestCase):
     def test_custom_xdg_directories(self):
@@ -82,7 +97,10 @@ Item {
             for relative, expression in zip(installer.VIEWS, expressions):
                 path = root / relative
                 path.parent.mkdir(parents=True)
-                path.write_text('Item {\n    property string artUrl: ' + expression + '\n}\n')
+                receiver = "MediaManager.active" if relative.endswith("MediaContent.qml") else "root.player"
+                controls = '\n'.join(f'    function {method}() {{ {receiver}.{method}(); }}'
+                                     for method in ("previous", "next", "togglePlaying"))
+                path.write_text('Item {\n    property string artUrl: ' + expression + '\n' + controls + '\n}\n')
             result = installer.patch_qml(root)
             for relative, content in result.items():
                 (root / relative).write_bytes(content)

@@ -16,6 +16,7 @@ MANAGER = Path("Services/MediaManager.qml")
 VIEWS = ("Modules/Keystone/MediaContent/MediaContent.qml",
          "Modules/Keystone/LyricsContent/LyricsContent.qml",
          "Modules/Lock/Cards/MediaCard.qml")
+LONG_STATUS = Path("Modules/Keystone/Styles/Long/LongStatusItem.qml")
 
 
 def xdg(name, fallback):
@@ -62,6 +63,9 @@ def patch_qml(source):
             raise RuntimeError("Unsupported Clavis player identity layout")
         text = text.replace(anchor, '        if (root.qqMusicArtwork[player.dbusName])\n'
                             '            return "QQ 音乐";\n' + anchor, 1)
+    if "function control(player, action)" not in text:
+        snippet = (ROOT / "config/media/qqmusic-control.qml.inc").read_text()
+        text = text.replace("    id: root\n", "    id: root\n\n" + snippet + "\n", 1)
     result[MANAGER] = text.encode()
     for relative in VIEWS:
         text = (source / relative).read_text()
@@ -74,7 +78,20 @@ def patch_qml(source):
             if not match or "trackArtUrl" not in match.group():
                 raise RuntimeError(f"Unsupported artwork property in {relative}")
             text = text[:match.start()] + match.group(1) + expression + text[match.end():]
+        if relative.endswith("MediaContent.qml") or relative.endswith("MediaCard.qml"):
+            receiver = "MediaManager.active" if relative.endswith("MediaContent.qml") else "root.player"
+            for method, action in (("previous", "Previous"), ("next", "Next"), ("togglePlaying", "PlayPause")):
+                old = f"{receiver}.{method}()"
+                new = f'MediaManager.control({receiver}, "{action}")'
+                if old not in text and new not in text:
+                    raise RuntimeError(f"Unsupported media controls in {relative}")
+                text = text.replace(old, new)
         result[Path(relative)] = text.encode()
+    if (source / LONG_STATUS).exists():
+        text = (source / LONG_STATUS).read_text()
+        text = text.replace("player.canTogglePlaying", "MediaManager.canToggle(player)")
+        text = text.replace("player.togglePlaying()", 'MediaManager.control(player, "PlayPause")')
+        result[LONG_STATUS] = text.encode()
     return result
 
 
