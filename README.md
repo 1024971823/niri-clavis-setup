@@ -46,6 +46,8 @@ bash install.sh --dry-run
 
 Niri 窗口式终端多开：`Super+T` 新建终端窗口，`Super+Tab` / `Super+Shift+Tab` 在窗口之间循环切换，`Super+,` 把右侧终端并入当前窗口组，`Super+W` 在普通平铺和多窗口标签显示之间切换，`Super+K` / `Super+J` 在标签内上下切换，`Super+.` 把底部终端拆分回独立窗口，`Super+O` 查看所有终端。
 
+Kitty 标签：`Ctrl+Shift+T` 新建标签，`Ctrl+Shift+Right` / `Ctrl+Shift+Left` 切换标签。每个 Kitty 标签会启动一个 tmux 会话；底部标题随当前程序和所在目录更新，例如 `omp · 项目名`、`nvim · 项目名`。tmux 内部标签也会自动显示当前程序名，手动重命名后保留自定义名称。
+
 终端内标签多开：`Ctrl+B` 再按 `C` 新建标签，`Ctrl+B` 再按 `Tab` / `N` / `P` 或左右方向键切换标签，`Ctrl+B` 再按数字键直接跳转，`Ctrl+B` 再按 `Q` 显示标签列表，`Ctrl+B` 再按 `,` 重命名，`Ctrl+B` 再按 `X` 关闭当前标签；也可以用 `Alt+1` 到 `Alt+9` 直接切换。多个独立终端窗口用 `Super+T`（或 `Super+Enter`）创建，`Mod+O` 打开 Niri 多窗口概览。
 
 终端会边输入边显示淡色的完整补全建议，约 0.16 秒后自动列出命令、函数、命令参数、可执行项或路径候选，候选菜单带简短说明；从预览补全中选完一条后会继续提示下一段内容。按 `→`、`End` 或 `Ctrl+F` 接受整条建议，`Alt+→` 或 `Alt+F` 只接受一个词；候选出现后用 `Tab`、上下键选择，回车插入，`Esc` 取消。输入 `git st`、`sys` 或函数名前几个字母即可看到效果。
