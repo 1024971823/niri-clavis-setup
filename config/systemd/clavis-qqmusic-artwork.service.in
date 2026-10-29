@@ -1,0 +1,14 @@
+[Unit]
+Description=QQ Music album artwork for Clavis
+After=clavis-shell.service
+PartOf=clavis-shell.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 @SCRIPT@
+Restart=on-failure
+RestartSec=5
+UMask=0077
+
+[Install]
+WantedBy=clavis-shell.service

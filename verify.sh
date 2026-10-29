@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+python3 "$(dirname "$0")/scripts/install_media.py" --dry-run
+[[ $(systemctl --user is-enabled mako.service 2>/dev/null || true) == masked ]]
+systemctl --user is-enabled --quiet clavis-qqmusic-artwork.service
+
 niri validate -c "$HOME/.config/niri/config.kdl"
 python3 -c 'import pathlib, tomllib; tomllib.loads(pathlib.Path.home().joinpath(".config/alacritty/alacritty.toml").read_text())'
 command -v kitty >/dev/null

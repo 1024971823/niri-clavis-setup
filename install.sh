@@ -103,7 +103,7 @@ SH
 
     sudo pacman -S --needed --noconfirm \
         bash-completion fcitx5 fzf fuzzel kitty polkit-kde-agent ttf-jetbrains-mono-nerd tmux \
-        swaybg swayidle swaylock playerctl brightnessctl
+        swaybg swayidle swaylock playerctl brightnessctl python-gobject
 fi
 
 if $dry_run; then
@@ -119,4 +119,8 @@ options=()
 [[ -z $pet_start ]] || options+=(--pet-start "$pet_start")
 [[ -z $pet_process_match ]] || options+=(--pet-process-match "$pet_process_match")
 $dry_run && options+=(--dry-run)
+python3 "$root/scripts/install_media.py" --dry-run
 python3 "$root/scripts/apply_config.py" "${options[@]}"
+if ! $dry_run; then
+    python3 "$root/scripts/install_media.py" --no-restart
+fi

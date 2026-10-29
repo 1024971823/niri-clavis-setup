@@ -58,6 +58,39 @@ Kitty 标签：`Ctrl+Shift+T` 新建标签，`Ctrl+Shift+Right` / `Ctrl+Shift+Le
 
 交互式 `ssh 用户@主机` 会把同一套目录选择和指令补全带到对方的 bash，不修改对方的 `~/.bashrc`。对方原有登录配置会先加载。`ssh 主机 命令` 和 `ssh -T git@github.com` 仍是原来的 SSH。对方需要 bash；没有 `fzf` 时目录菜单和预览补全不可用，登录本身不受影响。需要原来的 SSH 客户端时执行 `command ssh`。
 
+## 胶囊通知与 QQ 音乐封面
+
+安装时会屏蔽当前用户的 `mako.service`，防止它通过 D-Bus 自动启动并抢占通知服务。通知由 Clavis 接管，在顶部胶囊显示；恢复脚本会还原此前的 Mako 配置和运行状态。
+
+QQ 音乐 AppImage 1.1.8 可以通过 MPRIS 上报歌名和歌手，但没有上报封面。本适配会自动识别媒体服务对应的 QQ 音乐进程，在缺少原生封面时查询 QQ 音乐公开曲库，再把匹配的专辑封面提供给胶囊、歌词面板和锁屏媒体卡。播放器名称显示为「QQ 音乐」。首次查询可能需要几秒，切歌或退出播放器后不会沿用上一首封面；同名不同歌手、专辑不匹配或多个专辑版本无法区分时保留默认图标。原生封面始终优先。
+
+适配不搜索或读取 QQ 音乐账号、Cookies、登录配置，也不依赖 AppImage 的安装位置、挂载目录或特定用户名。通过系统媒体接口和 `/proc` 进程信息识别播放器；仅将歌名、歌手发送给 QQ 音乐公开曲库，封面从其图片服务加载。适用于以 `qqmusic` 进程运行并提供 MPRIS 的 Linux 客户端；Wine、Flatpak 或未来客户端版本需要另行验证。
+
+安装器自动查找用户 XDG 配置目录、运行中的 Clavis 配置和系统 XDG 配置目录；只在用户配置目录中应用 QML 适配，系统配置会复制为用户副本。辅助程序、缓存和备份分别使用 `XDG_DATA_HOME`、`XDG_CACHE_HOME`、`XDG_STATE_HOME`（未设置时使用标准用户目录），也支持 Clavis 的 `CLAVIS_CACHE_HOME`。仓库不包含本机绝对路径或 QQ 音乐私有配置。现有整套桌面安装脚本仍遵循前文约定使用标准用户目录；这些 XDG 支持专用于本节集成。
+
+已有桌面可单独安装本功能，无需覆盖整套 Niri 配置：
+
+```bash
+sudo pacman -S --needed python-gobject
+python3 scripts/install_media.py --dry-run
+python3 scripts/install_media.py
+```
+
+会短暂重启正在运行的 Clavis。卸载本次集成、恢复安装前状态：
+
+```bash
+python3 scripts/install_media.py --restore
+```
+
+检查运行情况：
+
+```bash
+systemctl --user status clavis-qqmusic-artwork.service
+playerctl -l
+```
+
+该适配需要访问 QQ 音乐公开曲库；网络错误或曲库接口变化时会保留默认封面并稍后重试。Clavis 更新若覆盖用户 QML，请重新运行单独安装命令；遇到不支持的 QML 结构会在写入前报错。
+
 ## 验证与恢复
 
 ```bash
